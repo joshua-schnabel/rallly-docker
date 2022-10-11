@@ -40,8 +40,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Checkout rallly
+        uses: actions/checkout@v3
         with:
           repository: lukevella/rallly
+          path: rallly
       - name: Download Env File
         uses: actions/download-artifact@v3
         with:
@@ -69,6 +72,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v3
         with:
+          context: ./rallly
           push: true
           platforms: linux/amd64,linux/arm/v6
           tags: ${{ env.TAGS }}
