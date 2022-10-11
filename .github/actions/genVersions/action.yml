@@ -1,0 +1,29 @@
+---
+description: "Extract Versions from changelog"
+name: "Generate Versions"
+outputs:
+  BRANCH:
+    description: BRANCH
+    value: "${{ steps.generate_version.outputs.BRANCH }}"
+  BUILD_DATE:
+    description: BUILD_DATE
+    value: "${{ steps.generate_version.outputs.BUILD_DATE }}"
+  GITHASH:
+    description: GITHASH
+    value: "${{ steps.generate_version.outputs.GITHASH }}"
+runs:
+  steps:
+    - id: generate_version
+      name: "Generate Version"
+      run: |
+        BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        GITHASH=$(git rev-parse "$GITHUB_SHA")
+        BRANCH=$(echo "$GITHUB_REF" | cut -d '/' -f 3 -s)
+        echo "::set-output name=BUILD_DATE::$BUILD_DATE"
+        echo "::set-output name=GITHASH::$GITHASH"
+        echo "::set-output name=BRANCH::$BRANCH"
+        echo "BUILD_DATE=$BUILD_DATE" >> $GITHUB_ENV
+        echo "GITHASH=$GITHASH" >> $GITHUB_ENV
+        echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+      shell: bash
+  using: composite
