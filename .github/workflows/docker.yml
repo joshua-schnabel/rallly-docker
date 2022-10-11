@@ -74,7 +74,7 @@ jobs:
         with:
           context: ./rallly
           push: true
-          platforms: linux/amd64,linux/arm/v6
+          platforms: linux/amd64
           tags: ${{ env.TAGS }}
           build-args: |
             BUILD_DATE=${{ env.BUILD_DATE }}
